@@ -219,6 +219,7 @@ contract Voting is Ownable{
         setVotesTallied();
     }
 
+    //@notice retourne the vainqeur
     function getWinner() external view currentWorkflowStatusMustIn(WorkflowStatus.VotesTallied) mustHaveWinner returns(string memory description, uint voteCount){
         return(proposals[winningProposalId].description,proposals[winningProposalId].voteCount);
     }
