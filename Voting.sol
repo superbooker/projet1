@@ -203,7 +203,7 @@ contract Voting is Ownable{
     */
 
 
-    // @notice demarre la phase de propostions 
+    // @notice demarre la phase de propositions 
     function startProposalsRegistration() external onlyOwner currentWorkflowStatusMustIn(WorkflowStatus.RegisteringVoters){
         //Ajout de la proposition : vote blanc
         proposals.push(Proposal("Vote blanc",0,address(0)));
