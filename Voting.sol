@@ -388,7 +388,7 @@ contract Voting is Ownable{
         emit voteHasBeenReset();
     }
 
-    // @notice Remercie la proposition du vainqueur par un petit pourboire
+    // @notice Remercie la proposition du vainqueur avec un petit pourboire
     // @dev Les bulletins doivent etre comptés et un vainqeur désigné
     function tipTheWinner() external payable currentWorkflowStatusMustIn(WorkflowStatus.VotesTallied) mustHaveWinner{
         //@dev Pas de tips inférieur à 0.01 ether
