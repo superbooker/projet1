@@ -92,7 +92,7 @@ contract Voting is Ownable{
     // @dev Fonctionnalité supplémentaire
     TypeOfQuorum currentTypeOfQuorum;
 
-    // @notice propostions en tete du dépouillement 
+    // @notice propostions en tete du dépouillement. J'ai besoin d'un tableau car je gère les propositions ex aequo
     uint[] headProposalIds;
 
     // @notice Urne de vote où sont enregistrées les id des propositions 
@@ -240,6 +240,8 @@ contract Voting is Ownable{
 
     // @notice prise en compte d'vote de votant
     // @param id de la propostion dans le tableau proposals
+    // @dev j'ai fait le choix de ne pas modifier le voteCount des propositions dans le tableau proposal car nous ne n'avons pas encore dépouillé l'urne
+    // ceci afin de ne pas influencer les futurs votants
     function voteForProposalId(uint _proposalId) external currentWorkflowStatusMustIn(WorkflowStatus.VotingSessionStarted) onlyRegisteredSender onlyHasntVotedSender{
         ballotArray.push(_proposalId);
         voters[msg.sender].votedProposalId = _proposalId;
@@ -297,7 +299,8 @@ contract Voting is Ownable{
             _proposal.voteCount++;
 
             //Si la proposition dépouillée a le plus de voix parmi les propopositions
-            //alors nous l'enregistrons comme seule proposition en tete en supprimant d'abord les propostions en tete précendentes 
+            //alors nous l'enregistrons comme seule proposition en tete en supprimant d'abord les propostions en tete précendentes
+            //Nous avons besoin d'un tableau car je gere les propositions ex aequo
             if(_proposal.voteCount > _winnerProposalIdCounts){
                 delete headProposalIds;
                 _winnerProposalIdCounts = _proposal.voteCount;
