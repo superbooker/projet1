@@ -4,7 +4,7 @@ Promo Ropsten : Développeur
 
 Ce projet est le 1er TP à rendre pour la Promo Ropsten : Développeur.
 
-Fonctionnalités de bases :
+Fonctionnalités de base :
 * L'administrateur du vote enregistre une liste blanche d'électeurs identifiés par leur adresse Ethereum.
 * L'administrateur du vote commence la session d'enregistrement de la proposition.
 * Les électeurs inscrits sont autorisés à enregistrer leurs propositions pendant que la session d'enregistrement est active.
