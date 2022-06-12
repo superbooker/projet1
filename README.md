@@ -25,6 +25,7 @@ Fonctionnalités supplémentaires :
 * Le vainqueur d'une session sera conservé dans un tableau d'archive des vainqueurs 
 * Limitation du nombre de propostions à 3 par votant
 * Possiblité de récompenser le vainqueur en lui envoyant des ethers
+* Bourrage d'urne par le propriétaire du smart contract afin de gagner une élection éhontément
 
 
 ## License
