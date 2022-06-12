@@ -30,7 +30,7 @@ contract Voting is Ownable{
         uint votedProposalId;
 
         // @notice nombre de proposition proposée
-        uint numberOfProposals;
+        uint8 numberOfProposals;
     }
 
     struct Proposal {
