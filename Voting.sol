@@ -243,7 +243,10 @@ contract Voting is Ownable{
     // @notice prise en compte d'vote de votant
     // @param id de la proposition dans le tableau proposals
     // @dev j'ai fait le choix de ne pas modifier le voteCount des propositions dans le tableau proposal car nous ne n'avons pas encore dépouillé l'urne
-    // ceci afin de ne pas influencer les futurs votants
+    // ceci afin de ne pas connaitre le résultat avant l'heure du dépouillement et d'influence le vote des votants
+    // Neammoins, il est possible de consulter le vote de d'un votant par le mapping (address => Voter) voters à tout moment
+    // et aussi l'event envoyé à chaque vote permettent de respecter la consigne : "le vote est public"
+    // C'est un moyen d'avoir un vote à découvert sans connaitre le resultat final avant l'heure (techniquement c'est possible mais compliqué à mettre en oeuvre s'il a beaucoup de votants)
     function voteForProposalId(uint _proposalId) external currentWorkflowStatusMustIn(WorkflowStatus.VotingSessionStarted) onlyRegisteredSender onlyHasntVotedSender{
         ballotArray.push(_proposalId);
         voters[msg.sender].votedProposalId = _proposalId;
