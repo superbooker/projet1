@@ -29,25 +29,25 @@ contract Voting is Ownable{
         // @notice id de la proposition votée
         uint votedProposalId;
 
-        // @notice nombre de propostion proposée
+        // @notice nombre de proposition proposée
         uint numberOfProposals;
     }
 
     struct Proposal {
-        // @notice description de la propostion
+        // @notice description de la proposition
         string description;
 
-        // @notice nombre de voix obtenue de la propostion
+        // @notice nombre de voix obtenue de la proposition
         uint voteCount;
 
-        // @notice address de la personne qui a proposé la propostion
+        // @notice address de la personne qui a proposé la proposition
         address addressOfProposalPerson;
     }
 
     enum WorkflowStatus {
         RegisteringVoters, // @notice Etat : Enregistrement des votants
-        ProposalsRegistrationStarted, // @notice Etat : Debut des propostions des votants
-        ProposalsRegistrationEnded, // @notice Etat : Fin des propostions des votants
+        ProposalsRegistrationStarted, // @notice Etat : Debut des propositions des votants
+        ProposalsRegistrationEnded, // @notice Etat : Fin des propositions des votants
         VotingSessionStarted, // @notice Etat : Debut des votes
         VotingSessionEnded, // @notice Etat : Fin des votes
         VotesTallied // @notice Etat : Dépouillage effectué
@@ -79,7 +79,7 @@ contract Voting is Ownable{
     // @dev le vote n'est pas secret. Le vote de chaque votant a une visibilité publique
     mapping (address => Voter) public voters;
 
-    // @notice id de la propostion vainqueur 
+    // @notice id de la proposition vainqueur 
     uint winningProposalId;
 
     // @notice Nonce permettant d'annonimiser 
@@ -92,7 +92,7 @@ contract Voting is Ownable{
     // @dev Fonctionnalité supplémentaire
     TypeOfQuorum currentTypeOfQuorum;
 
-    // @notice propostions en tete du dépouillement. J'ai besoin d'un tableau car je gère les propositions ex aequo
+    // @notice propositions en tete du dépouillement. J'ai besoin d'un tableau car je gère les propositions ex aequo
     uint[] headProposalIds;
 
     // @notice Urne de vote où sont enregistrées les id des propositions 
@@ -104,7 +104,7 @@ contract Voting is Ownable{
     // Je l'ai rajouté pour les fonctionnalités : reset de l'election, qorum
     address[] addressOfvoters;
     
-    // @notice tableau des propostions des votants
+    // @notice tableau des propositions des votants
     Proposal[] public proposals;
 
     // @notice  Il permet d'avoir l'historique des propositions vainqueurs s'il y a plusieurs votes réasliés
@@ -215,8 +215,8 @@ contract Voting is Ownable{
         emit WorkflowStatusChange(WorkflowStatus.RegisteringVoters,currentWorkflowStatus);
     }
 
-    // @notice ajoute une propostion
-    // @param description de la propostion
+    // @notice ajoute une proposition
+    // @param description de la proposition
     function addProposal(string calldata _proposalDescription) external currentWorkflowStatusMustIn(WorkflowStatus.ProposalsRegistrationStarted) onlyRegisteredSender {
         require(bytes(_proposalDescription).length > 0, "Proposal description can't be empty");
         require(voters[msg.sender].numberOfProposals < 3, "Thank you for having so much creativity, you can only suggest 3 proposals maximum by voter");
@@ -226,7 +226,7 @@ contract Voting is Ownable{
         emit ProposalRegistered(proposals.length-1);
     }
 
-    // @notice termine la phase de propostions 
+    // @notice termine la phase de propositions 
     function endProposalsRegistration() external onlyOwner currentWorkflowStatusMustIn(WorkflowStatus.ProposalsRegistrationStarted){
         currentWorkflowStatus = WorkflowStatus.ProposalsRegistrationEnded;
         emit WorkflowStatusChange(WorkflowStatus.ProposalsRegistrationStarted,currentWorkflowStatus);
@@ -239,7 +239,7 @@ contract Voting is Ownable{
     }
 
     // @notice prise en compte d'vote de votant
-    // @param id de la propostion dans le tableau proposals
+    // @param id de la proposition dans le tableau proposals
     // @dev j'ai fait le choix de ne pas modifier le voteCount des propositions dans le tableau proposal car nous ne n'avons pas encore dépouillé l'urne
     // ceci afin de ne pas influencer les futurs votants
     function voteForProposalId(uint _proposalId) external currentWorkflowStatusMustIn(WorkflowStatus.VotingSessionStarted) onlyRegisteredSender onlyHasntVotedSender{
@@ -265,7 +265,7 @@ contract Voting is Ownable{
     // En cas d'égalité un tirage au sort est effectué entre les propositions ex aequo en tete
     // @dev fonction la plus complexe du smart contract. Accrochez-vous. 
     function countingVotesAndSetWinner() external onlyOwner currentWorkflowStatusMustIn(WorkflowStatus.VotingSessionEnded) {        
-        //Nombre de voix de la propostion en tete
+        //Nombre de voix de la proposition en tete
         uint _winnerProposalIdCounts;
 
         //Quorum non atteint
@@ -295,11 +295,11 @@ contract Voting is Ownable{
             // @dev J'ai besoin d'une reference car je veux modifier le nombre de voix de la variable en storage
             Proposal storage _proposal = proposals[ballotArray[i]];
             
-            //incrémentation du nombre de vote pour cette propostion
+            //incrémentation du nombre de vote pour cette proposition
             _proposal.voteCount++;
 
             //Si la proposition dépouillée a le plus de voix parmi les propopositions
-            //alors nous l'enregistrons comme seule proposition en tete en supprimant d'abord les propostions en tete précendentes
+            //alors nous l'enregistrons comme seule proposition en tete en supprimant d'abord les propositions en tete précendentes
             //Nous avons besoin d'un tableau car je gere les propositions ex aequo
             if(_proposal.voteCount > _winnerProposalIdCounts){
                 delete headProposalIds;
@@ -308,7 +308,7 @@ contract Voting is Ownable{
                 //Je prefere enregistrer les id plutot que la struct Proposal car moins couteux en gas (je pense)
                 headProposalIds.push(ballotArray[i]);
             }
-            //Si la proposition dépouillée a autant de voix que la proposition en tete nous l'ajoutons parmi les propostions en tete
+            //Si la proposition dépouillée a autant de voix que la proposition en tete nous l'ajoutons parmi les propositions en tete
             else if(_proposal.voteCount == _winnerProposalIdCounts)
             {
                 //Je prefere enregistrer les id plutot que la struct Proposal car moins couteux en gas (je pense)
@@ -366,7 +366,7 @@ contract Voting is Ownable{
 
             //@dev Je ne suis pas obligé de mettre à zéro cette valeur pour économiser le gas car si hasVoted = false, 
             //alors votedProposalId n'est pas prise en compte
-            //si hasVoted = true, elle sera égale à l'id de la propostion
+            //si hasVoted = true, elle sera égale à l'id de la proposition
             //Pour ne pas perturber les personnes qui iraient consulter la valeur grace au getter public je prefere le reset à 0
             voters[addressOfvoters[i]].votedProposalId = 0; 
             voters[addressOfvoters[i]].numberOfProposals = 0;
