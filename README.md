@@ -20,7 +20,7 @@ Fonctionnalités supplémentaires :
 * Le vote blanc est une proposition comme une autre. Elle peut etre désignée vainqueure. Vive la démocratie !
 * Un bulletin de vote ayant pour n° de propostion inconnu est considéré comme un bulletin nul. Un votant peut tout à fait voter une proposition inexistante, son bulletin ne sera pas pris en compte.
 * En cas d'égalité encore plusieurs propositions, un tirage au sort est effectué parmi les propositions ex aequo en tete à la suite du dépouillement
-* Un qorum peut etre paramétré pendant la phase d'enregistrement. Si le quorum n'est pas atteint lors de la phase de dépouillement alors le dépouillement n'aura pas lieu
+* Un quorum peut etre paramétré pendant la phase d'enregistrement. Si le quorum n'est pas atteint lors de la phase de dépouillement alors le dépouillement n'aura pas lieu
 * Plusieurs session de vote peuvent avoir lieu. Le systene peut etre ré-initialisé.
 * Le vainqueur d'une session sera conservé dans un tableau d'archive des vainqueurs 
 * Limitation du nombre de propostions à 3 par votant
