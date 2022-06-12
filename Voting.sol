@@ -30,6 +30,8 @@ contract Voting is Ownable{
         uint votedProposalId;
 
         // @notice nombre de proposition proposée
+        // @dev fonctionnalité supplémentaire. Je pense que pour optimiser l'espace il faudrait 
+        // le mettre juste apres les 2 booléens pour optimiser l'espace mémoire et donc le gas
         uint8 numberOfProposals;
     }
 
@@ -388,7 +390,7 @@ contract Voting is Ownable{
         emit voteHasBeenReset();
     }
 
-    // @notice Remercie la proposition du vainqueur avec un petit pourboire
+    // @notice Remercie la proposition du vainqueur par un petit pourboire
     // @dev Les bulletins doivent etre comptés et un vainqeur désigné
     function tipTheWinner() external payable currentWorkflowStatusMustIn(WorkflowStatus.VotesTallied) mustHaveWinner{
         //@dev Pas de tips inférieur à 0.01 ether
