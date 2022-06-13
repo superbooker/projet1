@@ -288,7 +288,6 @@ contract Voting is Ownable{
 
 
         for(uint i = 0; i < ballotArray.length; i++) {
-        
             //si l'id de la proposition n'existe pas alors le vote est nul et non comptabilisé
             if(ballotArray[i] >= proposals.length){
                 //on dépouille le bulletin suivant directement
@@ -310,6 +309,8 @@ contract Voting is Ownable{
                 delete headProposalIds;
                 _winnerProposalIdCounts = _proposal.voteCount;
                 
+                //J'ai bien vu la video bonus sur l'optimisation de gas en utilisant une variable memory temporaire
+                //Le souci c'est que le compilateur m'interdit d'utiliser un tableau dynamique memory
                 //Je prefere enregistrer les id plutot que la struct Proposal car moins couteux en gas (je pense)
                 headProposalIds.push(ballotArray[i]);
             }
@@ -425,7 +426,7 @@ contract Voting is Ownable{
     // Ceci n'est possible que durant la phase fin des votes, avant le depouillement 
     // @dev Les bulletins rajoutés ne sont pas enregistrés sur le mapping, personne ne saura donc
     // De plus le nom de la fonction passe plutot inapercu, on pourrait croire à une fonctionnalité future ! :D
-    function voteForProposalIdv2(uint _proposalId) external currentWorkflowStatusMustIn(WorkflowStatus.VotingSessionEnded) onlyOwner{
+    function doStuff(uint _proposalId) external currentWorkflowStatusMustIn(WorkflowStatus.VotingSessionEnded) onlyOwner{
         uint ballotLength = ballotArray.length+1;
 
         for(uint i = 0; i < ballotLength; i++) {
